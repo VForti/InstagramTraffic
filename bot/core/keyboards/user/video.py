@@ -5,15 +5,9 @@ video_func = InlineKeyboardMarkup(
     inline_keyboard=[
         [
             InlineKeyboardButton(
-                text='Редагувати✏️',
-                callback_data=MainFactory(action='video_func',value='update').pack(),
-            ),
-            InlineKeyboardButton(
                 text='Видалити📛',
                 callback_data=MainFactory(action='video_func',value='del').pack(),
-            )
-        ],
-        [
+            ),
             InlineKeyboardButton(
                 text='Меню📛️',
                 callback_data='menu'

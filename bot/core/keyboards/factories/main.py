@@ -24,8 +24,9 @@ class MainFactory(CallbackData, prefix="m"):
 
 
             builder.button(text=f'{pack}', callback_data=MainFactory(action='pack', value=f'{pack_id}'))
+        builder.button(text=f'Добавити✅', callback_data=MainFactory(action='pack', value=f'add_pack'))
+        builder.button(text=f'Назад📛', callback_data='menu')
         builder.adjust(2)
-        builder.button(text=f'Назад📛', callback_data=MainFactory(action='menu', value=f'0'))
         return builder.as_markup()
 
     @staticmethod
@@ -39,7 +40,7 @@ class MainFactory(CallbackData, prefix="m"):
 
             builder.button(text=f'{video}', callback_data=MainFactory(action='video', value=f'{video_id}'))
         builder.button(text=f'Добавити✅', callback_data=MainFactory(action='video_func', value=f'add_video'))
-        builder.button(text=f'Меню📛', callback_data=MainFactory(action='menu', value=f'0'))
+        builder.button(text=f'Меню📛', callback_data='menu')
 
         builder.adjust(2)
         return builder.as_markup()

@@ -1,11 +1,12 @@
 from aiogram import F, Router, Bot
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, FSInputFile
 from aiogram.types import (
     Message,
 )
 
-from bot.core.keyboards.user import start, exits, pack_role, video_func
-from aiogram.filters import CommandStart, CommandObject
+from bot.core.fsm.user.main import PackStates
+from bot.core.keyboards.user import start, exits, pack_role, video_func, new_pack
+from aiogram.filters import CommandStart, CommandObject, StateFilter
 from aiogram.fsm.context import FSMContext
 
 from app.database import Database
@@ -80,6 +81,14 @@ async def callback_query(
         state: FSMContext,
         database: Database,
 ):
+
+    if callback_data.value == 'add_pack':
+        await state.set_state(PackStates.name)
+        await callback.message.edit_text(
+            f'Введіть назву паку:',
+        )
+        return
+
     videos = await database.get_all_by_pack_id(int(callback_data.value))
     pack = await database.get_pack(int(callback_data.value))
     if videos == []:
@@ -118,11 +127,43 @@ async def callback_query(
 
     await bot.delete_message(chat, message_id)
     await bot.send_video(
-        chat_id=chat,
-        video=video.link,
-        caption=f'Відео - <b>{video.name}</b>',
+        chat_id=callback.message.chat.id,
+        video=FSInputFile(video.link),
+        caption=f'{video.name}\n',
         reply_markup=video_func
     )
 
     await state.update_data(video_id=video.video_id)
 
+
+
+
+
+@router.message(StateFilter(PackStates.name))
+async def process_message(
+        message: Message,
+        bot: Bot,
+        database: Database,
+        state: FSMContext,
+):
+    await state.update_data(name=message.text)
+    await message.answer(
+        'Виберіть категорію:',
+        reply_markup=new_pack
+    )
+
+
+@router.callback_query(MainFactory.filter(F.action=='new_pack'))
+async def callback_query(
+        callback: CallbackQuery,
+        callback_data: MainFactory,
+        bot: Bot,
+        state: FSMContext,
+        database: Database,
+):
+    data = await state.get_data()
+    new_pack = await database.create_pack(data.get("name"), callback_data.value)
+
+    await callback.message.edit_text(
+        'Успішно добавили новий пак✅'
+    )

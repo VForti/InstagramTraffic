@@ -1,5 +1,6 @@
-from .user.main import VideoStates
+from .user.main import VideoStates,PackStates
 
 __all__ = [
-    'VideoStates'
+    'VideoStates',
+    'PackStates'
 ]

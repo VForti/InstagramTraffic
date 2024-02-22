@@ -1,5 +1,5 @@
 from .start import start,exits, bay
-from .pack import pack_role
+from .pack import pack_role,new_pack
 from .video import video_func, video_update
 
 
@@ -10,5 +10,6 @@ __all__ = [
 
     'pack_role',
     'video_func',
-    'video_update'
+    'video_update',
+    'new_pack'
 ]

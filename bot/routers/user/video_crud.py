@@ -32,14 +32,13 @@ async def callback_query(
         state: FSMContext,
         database: Database,
 ):
-    if callback_data.value == 'update':
-        await callback.message.edit_text(
-            'Ви хоче редагувати що?:',
-            reply_markup=video_update
-        )
+
     if callback_data.value == 'del':
         data = await state.get_data()
-        await callback.message.edit_text(
+        message_id = callback.message.message_id
+
+        await bot.delete_message(callback.message.chat.id, message_id)
+        await callback.message.answer(
             'Видалили✅',
         )
         await database.delete_video(int(data.get("video_id")))
