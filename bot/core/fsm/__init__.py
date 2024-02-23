@@ -1,6 +1,7 @@
-from .user.main import VideoStates,PackStates
+from .user.main import VideoStates,PackStates,AccountStates
 
 __all__ = [
     'VideoStates',
-    'PackStates'
+    'PackStates',
+    'AccountStates'
 ]

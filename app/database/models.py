@@ -33,4 +33,14 @@ class VideoModel(Base):
 
 
 
+class BayModel(Base):
+    __tablename__ = "bay"
+    bay_id: Mapped[int] = mapped_column(BigInteger, primary_key=True, unique=True, index=True)
+    goal: Mapped[int] = mapped_column(BigInteger)
+    role: Mapped[str] = mapped_column(String)
+    now_done: Mapped[int] = mapped_column(BigInteger, default=0)
+    done: Mapped[bool] = mapped_column(default=False, server_default="false")
+
+
+
 

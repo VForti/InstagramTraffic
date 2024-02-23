@@ -13,6 +13,12 @@ start = InlineKeyboardMarkup(
                 callback_data='list_pack'
             )
         ],
+        [
+            InlineKeyboardButton(
+                text='Залив стасистика📊',
+                callback_data='static'
+            )
+        ],
     ])
 # -
 

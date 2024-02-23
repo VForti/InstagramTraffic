@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 from aiogram.types import User
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .models import AccountModel, VideoModel, PackModel
-from .requests import account, video, pack
+from .models import AccountModel, VideoModel, PackModel, BayModel
+from .requests import account, video, pack, bay
 
 class Database:
     def __init__(self, session: AsyncSession) -> None:
@@ -125,6 +125,47 @@ class Database:
             session=self.session,
             role=role
         )
+
+
+    async def get_bay(self, bay_id: int) -> Optional[BayModel]:
+        return await bay.get(
+            bay_id=bay_id,
+            session=self.session
+        )
+
+    async def create_bay(self, goal: int,role: str) -> BayModel:
+        return await bay.create(
+            session=self.session,
+            goal=goal,
+            role=role
+        )
+
+    async def update_bay(self, bay_id: int, update_context: dict) -> None:
+        await bay.update(
+            bay_id=bay_id,
+            update_context=update_context,
+            session=self.session
+        )
+    async def delete_bay(self, bay_id: int) -> None:
+        await bay.delete(
+            bay_id=bay_id,
+            session=self.session
+        )
+
+
+
+    async def get_all_bay(self) -> list[BayModel]:
+        return await bay.get_all(
+            session=self.session
+        )
+
+    async def get_all_bay_by_role(self, role: str) -> list[BayModel]:
+        return await bay.get_all_bay_by_role(
+            session=self.session,
+            role=role
+        )
+
+
 
     async def save(self) -> None:
         await self.session.commit()

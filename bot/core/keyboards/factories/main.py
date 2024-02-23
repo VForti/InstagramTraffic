@@ -45,3 +45,21 @@ class MainFactory(CallbackData, prefix="m"):
         builder.adjust(2)
         return builder.as_markup()
 
+
+    @staticmethod
+    async def bay_static_button(line_list: list):
+        builder = InlineKeyboardBuilder()
+
+        for line in line_list:
+            join = line.split(': ')
+            goal = join[0]
+            bay_id = join[1]
+
+            builder.button(text=f'{goal}', callback_data=MainFactory(action='bay_static', value=f'{bay_id}'))
+        builder.button(text=f'Меню📛', callback_data='menu')
+
+        builder.adjust(2)
+        return builder.as_markup()
+
+
+
